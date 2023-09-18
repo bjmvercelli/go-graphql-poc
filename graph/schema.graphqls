@@ -29,6 +29,6 @@ type Query {
 }
 
 type Mutation {
-  addCategory(input: NewCategory!): Category!
-  addCourse(input: NewCourse!): Course!
+  createCategory(input: NewCategory!): Category!
+  createCourse(input: NewCourse!): Course!
 }

@@ -60,8 +60,8 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		AddCategory func(childComplexity int, input model.NewCategory) int
-		AddCourse   func(childComplexity int, input model.NewCourse) int
+		CreateCategory func(childComplexity int, input model.NewCategory) int
+		CreateCourse   func(childComplexity int, input model.NewCourse) int
 	}
 
 	Query struct {
@@ -71,8 +71,8 @@ type ComplexityRoot struct {
 }
 
 type MutationResolver interface {
-	AddCategory(ctx context.Context, input model.NewCategory) (*model.Category, error)
-	AddCourse(ctx context.Context, input model.NewCourse) (*model.Course, error)
+	CreateCategory(ctx context.Context, input model.NewCategory) (*model.Category, error)
+	CreateCourse(ctx context.Context, input model.NewCourse) (*model.Course, error)
 }
 type QueryResolver interface {
 	Categories(ctx context.Context) ([]*model.Category, error)
@@ -150,29 +150,29 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Course.Name(childComplexity), true
 
-	case "Mutation.addCategory":
-		if e.complexity.Mutation.AddCategory == nil {
+	case "Mutation.createCategory":
+		if e.complexity.Mutation.CreateCategory == nil {
 			break
 		}
 
-		args, err := ec.field_Mutation_addCategory_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_createCategory_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Mutation.AddCategory(childComplexity, args["input"].(model.NewCategory)), true
+		return e.complexity.Mutation.CreateCategory(childComplexity, args["input"].(model.NewCategory)), true
 
-	case "Mutation.addCourse":
-		if e.complexity.Mutation.AddCourse == nil {
+	case "Mutation.createCourse":
+		if e.complexity.Mutation.CreateCourse == nil {
 			break
 		}
 
-		args, err := ec.field_Mutation_addCourse_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_createCourse_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Mutation.AddCourse(childComplexity, args["input"].(model.NewCourse)), true
+		return e.complexity.Mutation.CreateCourse(childComplexity, args["input"].(model.NewCourse)), true
 
 	case "Query.categories":
 		if e.complexity.Query.Categories == nil {
@@ -314,13 +314,13 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 
 // region    ***************************** args.gotpl *****************************
 
-func (ec *executionContext) field_Mutation_addCategory_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_Mutation_createCategory_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
 	var arg0 model.NewCategory
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNNewCategory2githubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚋgraphᚋmodelᚐNewCategory(ctx, tmp)
+		arg0, err = ec.unmarshalNNewCategory2githubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚑpocᚋgraphᚋmodelᚐNewCategory(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -329,13 +329,13 @@ func (ec *executionContext) field_Mutation_addCategory_args(ctx context.Context,
 	return args, nil
 }
 
-func (ec *executionContext) field_Mutation_addCourse_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_Mutation_createCourse_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
 	var arg0 model.NewCourse
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNNewCourse2githubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚋgraphᚋmodelᚐNewCourse(ctx, tmp)
+		arg0, err = ec.unmarshalNNewCourse2githubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚑpocᚋgraphᚋmodelᚐNewCourse(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -554,7 +554,7 @@ func (ec *executionContext) _Category_courses(ctx context.Context, field graphql
 	}
 	res := resTmp.([]*model.Course)
 	fc.Result = res
-	return ec.marshalNCourse2ᚕᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚋgraphᚋmodelᚐCourseᚄ(ctx, field.Selections, res)
+	return ec.marshalNCourse2ᚕᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚑpocᚋgraphᚋmodelᚐCourseᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Category_courses(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -737,7 +737,7 @@ func (ec *executionContext) _Course_category(ctx context.Context, field graphql.
 	}
 	res := resTmp.(*model.Category)
 	fc.Result = res
-	return ec.marshalNCategory2ᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚋgraphᚋmodelᚐCategory(ctx, field.Selections, res)
+	return ec.marshalNCategory2ᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚑpocᚋgraphᚋmodelᚐCategory(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Course_category(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -763,8 +763,8 @@ func (ec *executionContext) fieldContext_Course_category(ctx context.Context, fi
 	return fc, nil
 }
 
-func (ec *executionContext) _Mutation_addCategory(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_addCategory(ctx, field)
+func (ec *executionContext) _Mutation_createCategory(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_createCategory(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -777,7 +777,7 @@ func (ec *executionContext) _Mutation_addCategory(ctx context.Context, field gra
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().AddCategory(rctx, fc.Args["input"].(model.NewCategory))
+		return ec.resolvers.Mutation().CreateCategory(rctx, fc.Args["input"].(model.NewCategory))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -791,10 +791,10 @@ func (ec *executionContext) _Mutation_addCategory(ctx context.Context, field gra
 	}
 	res := resTmp.(*model.Category)
 	fc.Result = res
-	return ec.marshalNCategory2ᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚋgraphᚋmodelᚐCategory(ctx, field.Selections, res)
+	return ec.marshalNCategory2ᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚑpocᚋgraphᚋmodelᚐCategory(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Mutation_addCategory(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Mutation_createCategory(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Mutation",
 		Field:      field,
@@ -821,15 +821,15 @@ func (ec *executionContext) fieldContext_Mutation_addCategory(ctx context.Contex
 		}
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Mutation_addCategory_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+	if fc.Args, err = ec.field_Mutation_createCategory_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
 	return fc, nil
 }
 
-func (ec *executionContext) _Mutation_addCourse(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_addCourse(ctx, field)
+func (ec *executionContext) _Mutation_createCourse(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_createCourse(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -842,7 +842,7 @@ func (ec *executionContext) _Mutation_addCourse(ctx context.Context, field graph
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().AddCourse(rctx, fc.Args["input"].(model.NewCourse))
+		return ec.resolvers.Mutation().CreateCourse(rctx, fc.Args["input"].(model.NewCourse))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -856,10 +856,10 @@ func (ec *executionContext) _Mutation_addCourse(ctx context.Context, field graph
 	}
 	res := resTmp.(*model.Course)
 	fc.Result = res
-	return ec.marshalNCourse2ᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚋgraphᚋmodelᚐCourse(ctx, field.Selections, res)
+	return ec.marshalNCourse2ᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚑpocᚋgraphᚋmodelᚐCourse(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Mutation_addCourse(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Mutation_createCourse(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Mutation",
 		Field:      field,
@@ -886,7 +886,7 @@ func (ec *executionContext) fieldContext_Mutation_addCourse(ctx context.Context,
 		}
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Mutation_addCourse_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+	if fc.Args, err = ec.field_Mutation_createCourse_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -921,7 +921,7 @@ func (ec *executionContext) _Query_categories(ctx context.Context, field graphql
 	}
 	res := resTmp.([]*model.Category)
 	fc.Result = res
-	return ec.marshalNCategory2ᚕᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚋgraphᚋmodelᚐCategoryᚄ(ctx, field.Selections, res)
+	return ec.marshalNCategory2ᚕᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚑpocᚋgraphᚋmodelᚐCategoryᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_categories(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -975,7 +975,7 @@ func (ec *executionContext) _Query_courses(ctx context.Context, field graphql.Co
 	}
 	res := resTmp.([]*model.Course)
 	fc.Result = res
-	return ec.marshalNCourse2ᚕᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚋgraphᚋmodelᚐCourseᚄ(ctx, field.Selections, res)
+	return ec.marshalNCourse2ᚕᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚑpocᚋgraphᚋmodelᚐCourseᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_courses(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -3117,16 +3117,16 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Mutation")
-		case "addCategory":
+		case "createCategory":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_addCategory(ctx, field)
+				return ec._Mutation_createCategory(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "addCourse":
+		case "createCourse":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_addCourse(ctx, field)
+				return ec._Mutation_createCourse(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
@@ -3589,11 +3589,11 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) marshalNCategory2githubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚋgraphᚋmodelᚐCategory(ctx context.Context, sel ast.SelectionSet, v model.Category) graphql.Marshaler {
+func (ec *executionContext) marshalNCategory2githubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚑpocᚋgraphᚋmodelᚐCategory(ctx context.Context, sel ast.SelectionSet, v model.Category) graphql.Marshaler {
 	return ec._Category(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNCategory2ᚕᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚋgraphᚋmodelᚐCategoryᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Category) graphql.Marshaler {
+func (ec *executionContext) marshalNCategory2ᚕᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚑpocᚋgraphᚋmodelᚐCategoryᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Category) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -3617,7 +3617,7 @@ func (ec *executionContext) marshalNCategory2ᚕᚖgithubᚗcomᚋbjmvercelliᚋ
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNCategory2ᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚋgraphᚋmodelᚐCategory(ctx, sel, v[i])
+			ret[i] = ec.marshalNCategory2ᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚑpocᚋgraphᚋmodelᚐCategory(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -3637,7 +3637,7 @@ func (ec *executionContext) marshalNCategory2ᚕᚖgithubᚗcomᚋbjmvercelliᚋ
 	return ret
 }
 
-func (ec *executionContext) marshalNCategory2ᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚋgraphᚋmodelᚐCategory(ctx context.Context, sel ast.SelectionSet, v *model.Category) graphql.Marshaler {
+func (ec *executionContext) marshalNCategory2ᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚑpocᚋgraphᚋmodelᚐCategory(ctx context.Context, sel ast.SelectionSet, v *model.Category) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -3647,11 +3647,11 @@ func (ec *executionContext) marshalNCategory2ᚖgithubᚗcomᚋbjmvercelliᚋgo�
 	return ec._Category(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNCourse2githubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚋgraphᚋmodelᚐCourse(ctx context.Context, sel ast.SelectionSet, v model.Course) graphql.Marshaler {
+func (ec *executionContext) marshalNCourse2githubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚑpocᚋgraphᚋmodelᚐCourse(ctx context.Context, sel ast.SelectionSet, v model.Course) graphql.Marshaler {
 	return ec._Course(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNCourse2ᚕᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚋgraphᚋmodelᚐCourseᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Course) graphql.Marshaler {
+func (ec *executionContext) marshalNCourse2ᚕᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚑpocᚋgraphᚋmodelᚐCourseᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Course) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -3675,7 +3675,7 @@ func (ec *executionContext) marshalNCourse2ᚕᚖgithubᚗcomᚋbjmvercelliᚋgo
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNCourse2ᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚋgraphᚋmodelᚐCourse(ctx, sel, v[i])
+			ret[i] = ec.marshalNCourse2ᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚑpocᚋgraphᚋmodelᚐCourse(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -3695,7 +3695,7 @@ func (ec *executionContext) marshalNCourse2ᚕᚖgithubᚗcomᚋbjmvercelliᚋgo
 	return ret
 }
 
-func (ec *executionContext) marshalNCourse2ᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚋgraphᚋmodelᚐCourse(ctx context.Context, sel ast.SelectionSet, v *model.Course) graphql.Marshaler {
+func (ec *executionContext) marshalNCourse2ᚖgithubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚑpocᚋgraphᚋmodelᚐCourse(ctx context.Context, sel ast.SelectionSet, v *model.Course) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -3720,12 +3720,12 @@ func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.Selec
 	return res
 }
 
-func (ec *executionContext) unmarshalNNewCategory2githubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚋgraphᚋmodelᚐNewCategory(ctx context.Context, v interface{}) (model.NewCategory, error) {
+func (ec *executionContext) unmarshalNNewCategory2githubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚑpocᚋgraphᚋmodelᚐNewCategory(ctx context.Context, v interface{}) (model.NewCategory, error) {
 	res, err := ec.unmarshalInputNewCategory(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNNewCourse2githubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚋgraphᚋmodelᚐNewCourse(ctx context.Context, v interface{}) (model.NewCourse, error) {
+func (ec *executionContext) unmarshalNNewCourse2githubᚗcomᚋbjmvercelliᚋgoᚑgraphqlᚑpocᚋgraphᚋmodelᚐNewCourse(ctx context.Context, v interface{}) (model.NewCourse, error) {
 	res, err := ec.unmarshalInputNewCourse(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
