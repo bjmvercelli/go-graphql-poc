@@ -1,4 +1,4 @@
-module github.com/bjmvercelli/go-graphql
+module github.com/bjmvercelli/go-graphql-poc
 
 go 1.21.1
 
